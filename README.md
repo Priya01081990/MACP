@@ -1,2 +1,2 @@
 # MACP
-MedicalAppForCardiacPatients
+Personal Medical App For Cardiac Patients
