@@ -14,7 +14,7 @@ def get_user_data_by_username(db:pd.DataFrame, username:str) -> Dict:
     return {
         "username":username,
         "name":row.name.tolist()[0],
-        "contact_no":row.contact_no.tolist()[0],
+        "contact_no":row.contact.tolist()[0],
         "address":row.address.tolist()[0]
     }
 

@@ -8,8 +8,7 @@ from flask import Flask, render_template, request, redirect, session, url_for
 app = Flask(__name__)
 app.secret_key = 'your_secret_key'  # Set a secret key for session management
 
-# Load user data from CSV file using Pandas
-USERS_DATABASE = pd.read_csv('users.csv')
+
 
 
 @app.route('/')
@@ -22,6 +21,9 @@ def login():
     if request.method == 'POST':
         username = request.form['username']
         password = request.form['password']
+
+        # Load user data from CSV file using Pandas
+        USERS_DATABASE = pd.read_csv('users.csv')
 
         if not chcek_login(db=USERS_DATABASE, username=username, password=password):    # Check if user exists in the
             # loaded user data
@@ -38,20 +40,33 @@ def login():
 @app.route('/signup', methods=['GET', 'POST'])
 def signup():
     if request.method == 'POST':
+
+        # Load user data from CSV file using Pandas
+        USERS_DATABASE = pd.read_csv('users.csv')
+
         username = request.form['username']
         password = request.form['password']
+        name = request.form['name']
+        contact = request.form['contact']
+        address = request.form['address']
 
         # Check if the username already exists
-        if username in USERS_DATABASE['username'].values:
+        if username in USERS_DATABASE['username'].tolist():
             error = 'Username already exists. Please choose a different username.'
-            return render_template('signup.html', error=error)
-
-        # Add new user to the loaded data
-        new_user = pd.DataFrame({'username': [username], 'password': [password]})
-        users_data = pd.concat([USERS_DATABASE, new_user], ignore_index=True)
-        users_data.to_csv('users.csv', index=False)
-
-        session['username'] = username
+            return render_template('error.html', error=error)
+        else:
+            # Add new user to the loaded data
+            new_user = pd.DataFrame(
+                [{
+                    'username': username,
+                    'password': password,
+                    'name': name,
+                    'contact': contact,
+                    'address': address
+                 }]
+            )
+            users_data = pd.concat([USERS_DATABASE, new_user], ignore_index=True)
+            users_data.to_csv('users.csv', index=False)
         return redirect('/')
 
     return render_template('signup.html')
