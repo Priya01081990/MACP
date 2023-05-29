@@ -9,7 +9,8 @@ app = Flask(__name__)
 app.secret_key = 'your_secret_key'  # Set a secret key for session management
 
 
-
+def health_chcek_api(bp:float, bs:float, c:float):
+    return False
 
 @app.route('/')
 def home():
@@ -70,6 +71,28 @@ def signup():
         return redirect('/')
 
     return render_template('signup.html')
+
+
+
+@app.route('/healthcheck', methods=['GET', 'POST'])
+def healthcheck():
+    if request.method == 'POST':
+
+        # Load user data from CSV file using Pandas
+
+        bp = request.form['bp']
+        bs = request.form['bs']
+        c = request.form['c']
+
+
+        # Check if the username already exists
+        if health_chcek_api(bp=float(bp), bs=float(bs), c=float(c)):
+            msg = 'YTD'
+            return render_template('droneservice.html', msg=msg)
+
+        return render_template('home.html')
+
+    return render_template('home.html')
 
 
 @app.route('/logout')
