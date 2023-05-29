@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Home</title>
+</head>
+<body>
+
+<div>
+    <p>Wellcome {{ name }} | This is your personal medical emergency app | <a href="/logout">Logout</a> </p>
+</div>
+
+<div>
+    <table style="border: 1px solid">
+      <tr>
+        <th colspan="2">User Data</th>
+      </tr>
+      {% for key, value in user_data.items() %}
+      <tr>
+        <td>{{ key }}</td>
+        <td>{{ value  }}</td>
+      </tr>
+      {% endfor %}
+    </table>
+</div>
+</body>
+</html>
